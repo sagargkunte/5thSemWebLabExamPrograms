@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./jquery.js"></script>
+  </head>
+  <style>
+    #animateDiv {
+        height: 50px;
+        width: 50px;
+        background: #000;
+        position: relative;
+    }
+  </style>
+  <body>
+    <p id="myParagraph">This is the original paragramph</p>
+
+    <ul id="mylist">
+      <li>my list1</li>
+      <li>my list2</li>
+    </ul>
+
+    <button id="appendBtn">Append content</button>
+    <button id="animateBtn">Animate div</button>
+
+
+    <div id="animateDiv"></div>
+
+    <script>
+      $(document).ready(function () {
+        $("#appendBtn").click(function () {
+          $("#myParagraph").append("</br>Here are some more text");
+
+          $("#mylist").append("<li>New Item</li>");
+        });
+
+
+        $("#animateBtn").click(function () {
+            $("#animateDiv").animate({
+                left: "200px",
+                height: "150px",
+                width: "150px"  
+            },2000,function () {
+                $(this).css("background-color","green")
+            });
+        });
+      });
+    </script>
+  </body>
+</html>
