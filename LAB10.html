@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="jquery.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="withoutJquery">
+        <h2>Click below to get data from server using AJAX</h2>
+        <button onclick="AJAX()">CLick Me!</button>
+      </div>
+
+      <div class="withJquery">
+        <h2>Click below to get data from server using AJAX with Jquery</h2>
+        <button onclick="AJAXwithJquery()">CLick Me!</button>
+      </div>
+
+      <div class="getJSON">
+        <h2>Click below to get data from server using AJAX with Jquery</h2>
+        <button onclick="getJSON()">CLick Me!</button>
+      </div>
+
+       <div class="parseJSON">
+        <h2>Click below to get data from server using AJAX with Jquery</h2>
+        <button onclick="parseJSON()">CLick Me!</button>
+      </div>
+    </div>
+  </body>
+  <script>
+    const AJAX = () => {
+      fetch("data.txt")
+        .then((res) => res.text())
+        .then((data) => {
+          console.log(data);
+          const resDataElement = document.createElement("p");
+          resDataElement.innerText = data;
+          const withoutJquery = document.getElementsByClassName("withoutJquery")[0];
+          withoutJquery.appendChild(resDataElement);
+        });
+    };
+
+    const AJAXwithJquery = () => {
+      $.ajax({
+        url: "data.txt",
+        method: "GET",
+        success: function (data) {
+          const p = $("<p></p>");
+          const withJquery = $(".withJquery");
+          p.text(data);
+          withJquery.append(p);
+        },
+      });
+    };
+
+    const getJSON = () => {
+      $.getJSON("data.json", function (res) {
+        console.log(res);
+        const p = $("<p></p>");
+        const withJquery = $(".getJSON");
+        p.text(JSON.stringify(res), null, 4);
+        withJquery.append(p);
+      });
+    };
+
+    const parseJSON = () => {
+      $.get("data.json", function (data) {
+        console.log(data);
+        const obj = $.parseJSON(JSON.stringify(data));
+        const p = $("<p></p>");
+        const parseJSON = $(".parseJSON");
+        p.text(JSON.stringify(obj));
+        parseJSON.append(p);
+      });
+    };
+  </script>
+</html>
