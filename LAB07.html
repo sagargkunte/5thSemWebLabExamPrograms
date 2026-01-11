@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="section">
+        <h2>a. JSON Text to JavaScript Object</h2>
+        <textarea rows="4" name="" id="jsonText" placeholder="Enter JSON here e.g. {'name':'your-name','age':'your-age'}"></textarea>
+        <button onclick="parseJSON()">Convert JSON to Object</button>
+        <pre id="jsonOutput"></pre>
+    </div>
+
+    <div class="section">
+        <h2>b. Convert JSON Date to JS Date</h2>
+        <input type="text" id="jsonDate" placeholder="Enter date string e.g '2026-01-11TT12:00:002'"> 
+        <button onclick="convertToDate()">Convert JSON to Object</button>
+        <pre id="dateOutput"></pre>
+    </div>
+
+    <div class="section">
+        <h2>c1. JSON to CSV convertor</h2>
+        <input type="text" id="json" placeholder="Enter JSON array"> 
+        <button onclick="jsonToCsv()">Convert JSON to CSV</button>
+        <pre id="csvOutputResponse"></pre>
+
+
+        <h2>c2. CSV to JSON convertor</h2>
+        <textarea rows="2"  id="csv" placeholder="Enter CSV e.g name,age \n alice,20"></textarea>
+        <button onclick="csvToJson()">Convert JSON to CSV</button>
+        <pre id="jsonOutputReponse"></pre>
+    </div>
+</body>
+
+<script>
+    function parseJSON() {
+        const text = document.querySelector("#jsonText").value;
+        try {
+            const obj = JSON.parse(text);
+            document.getElementById("jsonOutput").innerText = JSON.stringify(obj,null,2);
+        } catch(err) {
+            document.getElementById("jsonOutput").innerText = "Invalid Syntax"
+            console.log(err);
+        }
+    }
+
+    function convertToDate() {
+        const dateStr = document.querySelector("#jsonDate").value;
+        const dateObj = new Date(dateStr);
+
+        if(!isNaN(dateObj)) {
+            document.getElementById('dateOutput').innerText = dateObj.toString();
+        } else {
+            document.getElementById('dateOutput').innerText = "Invalid Date input"
+        }
+    }
+
+    function jsonToCsv() {
+        const jsonText = document.querySelector("#json").value;
+        try {
+            const arr = JSON.parse(jsonText);
+            const keys = Object.keys(arr[0]);
+
+            const csv = [
+                keys.join(','), ...arr.map(obj => keys.map(k => obj[k]).join(','))
+            ].join('\n');
+            document.getElementById("csvOutputResponse").innerText = csv;
+        } catch(e) {
+            console.log(e);
+            document.getElementById("csvOutputResponse").innerText = "Invalid JSON";
+        }
+    }
+
+    function csvToJson() {
+        const csv = document.querySelector("#csv").value.trim();
+        console.log("This is csv",csv);
+        try {
+            const  lines = csv.split('\n');
+            console.log("This is lines",lines);
+            const headers = lines[0].split(',');
+            var result = [];
+            for(let i=1;i<lines.length;i++) {
+                let values = lines[i].split(",");
+                const obj = {};
+
+                for(let j=0;j<headers.length;j++) {
+                    obj[headers[j]] = values[j];
+                }
+                console.log(obj);
+                result.push(obj);
+            }
+            console.log(result);
+            document.getElementById("jsonOutputReponse").innerText = JSON.stringify(result,null,2);
+        } catch(e) {
+            document.getElementById("jsonOutputReponse").innerText = "Invalid CSV"
+        }
+    }
+
+</script>
+</html>
